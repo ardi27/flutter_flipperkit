@@ -4,7 +4,7 @@ version '1.0'
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
@@ -31,9 +31,11 @@ android {
         disable 'InvalidPackage'
     }
     dependencies {
-        releaseImplementation project(':flipper-no-op')
+        releaseImplementation 'com.facebook.flipper:flipper-noop:0.189.0'
         debugImplementation 'com.facebook.flipper:flipper:0.189.0'
         debugImplementation 'com.facebook.flipper:flipper-network-plugin:0.189.0'
         debugImplementation 'com.facebook.soloader:soloader:0.10.5'
     }
+
+    namespace "org.leanflutter.plugins.flutter_flipperkit"
 }
