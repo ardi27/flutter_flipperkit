@@ -8,16 +8,18 @@ void main() {
 
   FlipperClient flipperClient = FlipperClient.getDefault();
 
-  flipperClient.addPlugin(new FlipperNetworkPlugin());
-  flipperClient.addPlugin(new FlipperSharedPreferencesPlugin());
+  flipperClient.addPlugin(FlipperNetworkPlugin());
+  flipperClient.addPlugin(FlipperSharedPreferencesPlugin());
   // flipperClient.addPlugin(new FlipperDatabaseBrowserPlugin());
-  flipperClient.addPlugin(new FlipperReduxInspectorPlugin());
+  flipperClient.addPlugin(FlipperReduxInspectorPlugin());
   flipperClient.start();
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -27,26 +29,26 @@ class _MyAppState extends State<MyApp> {
     FlipperNetworkPlugin flipperNetworkPlugin =
         FlipperClient.getDefault().getPlugin("Network") as FlipperNetworkPlugin;
 
-    String uniqueId = new Uuid().v4();
-    RequestInfo requestInfo = new RequestInfo(
+    String uniqueId = const Uuid().v4();
+    RequestInfo requestInfo = RequestInfo(
       requestId: uniqueId,
-      timeStamp: new DateTime.now().millisecondsSinceEpoch,
+      timeStamp: DateTime.now().millisecondsSinceEpoch,
       uri: 'https://example.com/account/login',
-      headers: new Map()..putIfAbsent("Content-Type", () => "application/json"),
+      headers: {}..putIfAbsent("Content-Type", () => "application/json"),
       method: 'POST',
-      body: new Map()
+      body: {}
         ..putIfAbsent("username", () => "example")
         ..putIfAbsent("password", () => "123456"),
     );
 
     flipperNetworkPlugin.reportRequest(requestInfo);
 
-    ResponseInfo responseInfo = new ResponseInfo(
+    ResponseInfo responseInfo = ResponseInfo(
       requestId: uniqueId,
-      timeStamp: new DateTime.now().millisecondsSinceEpoch,
+      timeStamp: DateTime.now().millisecondsSinceEpoch,
       statusCode: 200,
-      headers: new Map()..putIfAbsent("Content-Type", () => "application/json"),
-      body: new Map()
+      headers: {}..putIfAbsent("Content-Type", () => "application/json"),
+      body: {}
         ..putIfAbsent("username", () => "lijy91")
         ..putIfAbsent("age", () => 28)
         ..putIfAbsent("name", () => "LiJianying"),
@@ -65,7 +67,7 @@ class _MyAppState extends State<MyApp> {
         body: Column(
           children: <Widget>[
             ListTile(
-              title: Text("Preferences"),
+              title: const Text("Preferences"),
               onTap: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 int counter = (prefs.getInt('counter') ?? 0) + 1;
@@ -73,11 +75,11 @@ class _MyAppState extends State<MyApp> {
               },
             ),
             ListTile(
-              title: Text("Network"),
-              onTap: this._testNetwork,
+              title: const Text("Network"),
+              onTap: _testNetwork,
             ),
             ListTile(
-              title: Text("ReduxInspector"),
+              title: const Text("ReduxInspector"),
               onTap: () {
                 FlipperReduxInspectorPlugin flipperReduxInspectorPlugin =
                     FlipperClient.getDefault()
@@ -85,13 +87,13 @@ class _MyAppState extends State<MyApp> {
                         as FlipperReduxInspectorPlugin;
 
                 ActionInfo actionInfo = ActionInfo(
-                  uniqueId: new Uuid().v4(),
+                  uniqueId: const Uuid().v4(),
                   actionType: 'LoginSuccess',
-                  timeStamp: new DateTime.now().millisecondsSinceEpoch,
-                  payload: new Map()
+                  timeStamp: DateTime.now().millisecondsSinceEpoch,
+                  payload: {}
                     ..putIfAbsent("username", () => "lijy91@foxmail.com")
                     ..putIfAbsent("password", () => "123456"),
-                  nextState: new Map()
+                  nextState: {}
                     ..putIfAbsent("user", () => {"name": "LiJianying"}),
                 );
                 flipperReduxInspectorPlugin.report(actionInfo);
